@@ -74,12 +74,17 @@ class Shipment {
         return 0.0;
     }
 
+    public double finalFee() {
+        return calculateFee();
+    }
+
     public void printReceipt() {
         System.out.println();
         System.out.println("Tracking Number: " + trackingNo);
         System.out.println("Content Type: " + contentType);
         System.out.println("Weight: " + weightKg + "kg, Distance: " + distanceKm + "km");
         System.out.println("Total: " + calculateFee());
+        System.out.println("Final Total: " + finalFee());
     }
 }
 
@@ -92,6 +97,14 @@ class StandardShipping extends Shipment {
     public double calculateFee() {
         return 15.0 + 0.08 * getDistanceKm() + 1.5 * getWeightKg();
     }
+
+    @Override 
+    public double finalFee(){
+        if(d < 200){
+            return calculateFee - (calculateFee()*0.5);
+        }
+        else return calculateFee();
+    }
 }
 
 class ExpressShipping extends Shipment {
@@ -102,6 +115,11 @@ class ExpressShipping extends Shipment {
     @Override
     public double calculateFee() {
         return 20.0 + 25.0 + 0.12 * getDistanceKm() + 2.2 * getWeightKg();
+    }
+
+    @Override 
+    public double finalFee(){
+    return calculateFee();
     }
 }
 
@@ -117,5 +135,13 @@ class InternationalShipping extends Shipment {
             fee += 35.0;
         }
         return fee;
+    }
+
+    @Override 
+    public double finalFee(){
+        if(w < 10){
+            return calculateFee - (calculateFee()*0.3);
+        }
+        else return calculateFee();
     }
 }
